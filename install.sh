@@ -17,3 +17,4 @@ ln -s ${BASEDIR}/bash/.bash_functions ~/.bash_functions
 # git
 ln -s ${BASEDIR}/git/.gitconfig ~/.gitconfig
 ln -s ${BASEDIR}/git/.gitexcludes ~/.gitexcludes
+ln -s ${BASEDIR}/git/.git-completion.bash ~/.git-completion.bash
