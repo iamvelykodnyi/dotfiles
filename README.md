@@ -3,11 +3,12 @@
 ## Install
 
 ```bash
-$ git clone https://github.com/iamvelykodnyi/dotfiles
+$ git clone git@github.com:sergiivelykodnyi/dotfiles.git
 $ cd dotfiles
 $ ./install.sh
 ```
 
+## Colors
 ```
 txtblk='\e[0;30m' # Black - Regular
 txtred='\e[0;31m' # Red
@@ -42,6 +43,7 @@ bakpur='\e[45m'   # Purple
 bakcyn='\e[46m'   # Cyan
 bakwht='\e[47m'   # White
 txtrst='\e[0m'    # Text Reset
+```
 
 
 ## Thank you for resources
