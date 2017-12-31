@@ -1,6 +1,5 @@
-[user]
-	name = Sergii Velykodnyi
-	email = sergii.velykodnyi@gmail.com
+[include]
+  path = ~/.gituser
 [filter "lfs"]
   smudge = git-lfs smudge %f
   required = true
