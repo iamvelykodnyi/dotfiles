@@ -6,6 +6,9 @@ BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # ln -s ${BASEDIR}/vimrc ~/.vimrc
 # ln -s ${BASEDIR}/vim/ ~/.vim
 
+# nvm
+# ln -s ${BASEDIR}/nvm ~/.nvm
+
 # bash
 ln -s ${BASEDIR}/bash/.bash_aliases ~/.bash_aliases
 ln -s ${BASEDIR}/bash/.bash_profile ~/.bash_profile
