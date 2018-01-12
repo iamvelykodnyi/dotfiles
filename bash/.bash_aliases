@@ -12,11 +12,8 @@ alias -- -="cd -"
 alias db="cd ~/Dropbox"
 alias dl="cd ~/Downloads"
 alias dt="cd ~/Desktop"
-alias p="cd ~/Projects"
-alias w="cd ~/Work"
-alias g="git"
-alias h="history"
-alias j="jobs"
+alias pj="cd ~/Projects"
+alias sb="cd ~/Sandbox"
 
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`
