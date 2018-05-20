@@ -7,7 +7,11 @@ BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # ln -s ${BASEDIR}/vim/ ~/.vim
 
 # nvm
-ln -s ${BASEDIR}/nvm ~/.nvm/default-packages
+NVM_DIR="$HOME/.nvm"
+git clone https://github.com/creationix/nvm.git "$NVM_DIR"
+cd "$NVM_DIR"
+git checkout `git describe --abbrev=0 --tags --match "v[0-9]*" origin`
+ln -s ${BASEDIR}/nvm/default-packages ~/.nvm/default-packages
 
 # bash
 ln -s ${BASEDIR}/bash/.bash_aliases ~/.bash_aliases
