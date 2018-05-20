@@ -8,6 +8,15 @@ $ cd dotfiles
 $ ./install.sh
 ```
 
+### Add user data for Git
+
+Open the file `~/.gituser` and add your data:
+```
+[user]
+  name = enter your name
+  email = enter your email
+```
+
 ## Colors
 ```
 txtblk='\e[0;30m' # Black - Regular
