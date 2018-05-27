@@ -14,7 +14,8 @@ if [ "$SH_VARIANT" == "bash" ]; then
   ln -s ${BASE_DIR}/bash/.bash_functions ~/.bash_functions
 else
   # zsh
-  ln -s ${BASEDIR}/zsh/.zshrc ~/.zshrc
+  ln -s ${BASE_DIR}/zsh/.zshrc ~/.zshrc
+  ln -s ${BASE_DIR}/zsh/agnoster.zsh-theme ~/.oh-my-zsh/custom/themes/agnoster.zsh-theme
 fi
 
 # TODO: Add vim configuration
