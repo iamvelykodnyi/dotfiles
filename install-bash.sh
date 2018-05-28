@@ -1,22 +1,15 @@
 #!/bin/bash
 
 BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SH_VARIANT=$1
 
 echo "Instal sh configuration"
-if [ "$SH_VARIANT" == "bash" ]; then
-  # bash
-  ln -s ${BASE_DIR}/bash/.bash_aliases ~/.bash_aliases
-  ln -s ${BASE_DIR}/bash/.bash_profile ~/.bash_profile
-  ln -s ${BASE_DIR}/bash/.bash_prompt ~/.bash_prompt
-  ln -s ${BASE_DIR}/bash/.bashrc ~/.bashrc
-  ln -s ${BASE_DIR}/bash/.bash_exports ~/.bash_exports
-  ln -s ${BASE_DIR}/bash/.bash_functions ~/.bash_functions
-else
-  # zsh
-  ln -s ${BASE_DIR}/zsh/.zshrc ~/.zshrc
-  ln -s ${BASE_DIR}/zsh/agnoster.zsh-theme ~/.oh-my-zsh/custom/themes/agnoster.zsh-theme
-fi
+ln -s ${BASE_DIR}/bash/.bash_aliases ~/.bash_aliases
+ln -s ${BASE_DIR}/bash/.bash_profile ~/.bash_profile
+ln -s ${BASE_DIR}/bash/.bash_prompt ~/.bash_prompt
+ln -s ${BASE_DIR}/bash/.bashrc ~/.bashrc
+ln -s ${BASE_DIR}/bash/.bash_exports ~/.bash_exports
+ln -s ${BASE_DIR}/bash/.bash_functions ~/.bash_functions
+
 
 # TODO: Add vim configuration
 # vim
