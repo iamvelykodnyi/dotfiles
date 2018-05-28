@@ -81,7 +81,7 @@ prompt_context() {
 
 # Git: branch/detached head, dirty status
 prompt_git() {
-  local color ref
+  local color ref s=''
   is_dirty() {
     test -n "$(git status --porcelain --ignore-submodules)"
   }
@@ -89,11 +89,36 @@ prompt_git() {
   if [[ -n "$ref" ]]; then
     if is_dirty; then
       color=yellow
-      ref="${ref} $PLUSMINUS"
+
+      # Ensure the index is up to date.
+      git update-index --really-refresh -q &>/dev/null;
+
+      # Check for uncommitted changes in the index.
+      if ! $(git diff --quiet --ignore-submodules --cached); then
+        s+="+";
+      fi;
+
+      # Check for unstaged changes.
+      if ! $(git diff-files --quiet --ignore-submodules --); then
+        s+="!";
+      fi;
+
+      # Check for untracked files.
+      if [ -n "$(git ls-files --others --exclude-standard)" ]; then
+        s+="?";
+      fi;
+
+      ref="${ref} $s"
     else
       color=green
       ref="${ref} "
     fi
+
+    # Check for stashed files.
+    if $(git rev-parse --verify refs/stash &>/dev/null); then
+      ref="${ref}$"
+    fi;
+
     if [[ "${ref/.../}" == "$ref" ]]; then
       ref="$BRANCH $ref"
     else
@@ -112,7 +137,7 @@ prompt_dir() {
   done
   if [[ $git_root = / ]]; then
     unset git_root
-    prompt_short_dir=' %~ '
+    prompt_short_dir=" %~ "
   else
     parent=${git_root%\/*}
     prompt_short_dir=" ${PWD#$parent/} "
