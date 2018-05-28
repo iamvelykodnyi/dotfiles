@@ -7,6 +7,17 @@ ln -s ${BASE_DIR}/git/.gitconfig ~/.gitconfig
 ln -s ${BASE_DIR}/git/.gitexcludes ~/.gitexcludes
 ln -s ${BASE_DIR}/git/.git-completion.bash ~/.git-completion.bash
 
+echo "Install shell files..."
+cp ${BASE_DIR}/shell/source/.extra ~/.extra
+ln -s ${BASE_DIR}/shell/source/.exports ~/.exports
+ln -s ${BASE_DIR}/shell/source/.aliases ~/.aliases
+ln -s ${BASE_DIR}/shell/source/.functions ~/.functions
+
+echo "Install bash files..."
+ln -s ${BASE_DIR}/shell/bash/.bash_profile ~/.bash_profile
+ln -s ${BASE_DIR}/shell/bash/.bash_prompt ~/.bash_prompt
+ln -s ${BASE_DIR}/shell/bash/.bashrc ~/.bashrc
+
 echo "Set zsh to default shell..."
 chsh -s $(which zsh)
 
@@ -17,7 +28,7 @@ echo "Install zsh configuration..."
 if [ -f ~/.zshrc ]; then
   cp ~/.zshrc ~/.zshrc-backup
 fi
-ln -s ${BASE_DIR}/zsh/.zshrc ~/.zshrc
+ln -s ${BASE_DIR}/shell/zsh/.zshrc ~/.zshrc
 
 # TODO: Add vim configuration
 # vim
