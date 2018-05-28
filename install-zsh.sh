@@ -3,13 +3,10 @@ BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # git
 echo "Install git configuration"
-# cp ${BASE_DIR}/git/.gituser ~/.gituser
-# ln -s ${BASE_DIR}/git/.gitconfig ~/.gitconfig
-# ln -s ${BASE_DIR}/git/.gitexcludes ~/.gitexcludes
-# ln -s ${BASE_DIR}/git/.git-completion.bash ~/.git-completion.bash
-
-# echo "Install oh-my-zsh"
-# sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+cp ${BASE_DIR}/git/.gituser ~/.gituser
+ln -s ${BASE_DIR}/git/.gitconfig ~/.gitconfig
+ln -s ${BASE_DIR}/git/.gitexcludes ~/.gitexcludes
+ln -s ${BASE_DIR}/git/.git-completion.bash ~/.git-completion.bash
 
 echo "Set zsh to default shell"
 chsh -s $(which zsh)

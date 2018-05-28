@@ -2,17 +2,16 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 source $HOME/antigen.zsh
+
 # Load the oh-my-zsh's library
 antigen use oh-my-zsh
-
+# Load the oh-my-zsh's plugins
 antigen bundle git
-# Syntax highlighting bundle.
-# antigen bundle zsh-users/zsh-syntax-highlighting
-# Fish-like auto suggestions
-# antigen bundle zsh-users/zsh-autosuggestions
-# Extra zsh completions
-# antigen bundle zsh-users/zsh-completions
-# nmv
+antigen bundle vi-mode
+antigen bundle npm
+antigen bundle node
+
+# Load other plugins
 antigen bundle lukechilds/zsh-nvm
 
 # Load the theme
@@ -21,6 +20,5 @@ antigen theme sergiivelykodnyi/vigeo-zsh-theme
 # Tell antigen that you're done
 antigen apply
 
-# Example aliases
+# Aliases
 alias zshconfig="code ~/.zshrc"
-alias ohmyzsh="code ~/.oh-my-zsh"
