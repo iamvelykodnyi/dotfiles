@@ -16,7 +16,7 @@ antigen bundle git
 antigen bundle lukechilds/zsh-nvm
 
 # Load the theme
-antigen theme robbyrussell
+antigen theme sergiivelykodnyi/vigeo-zsh-theme
 
 # Tell antigen that you're done
 antigen apply
