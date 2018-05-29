@@ -32,6 +32,12 @@ Open the file `~/.gituser` and add your data:
 
 This file you can use for add custom commands which you don’t want to commit to a public repository.
 
+## Updating zsh plugins
+Just run in a terminal:
+```
+$ antigen update
+```
+
 
 ## Thank you for resources
 * [Github dotfiles](https://dotfiles.github.io/)
