@@ -12,7 +12,7 @@ antigen bundle node
 antigen bundle lukechilds/zsh-nvm
 
 # Load the theme
-antigen theme sergiivelykodnyi/vigeo-zsh-theme
+antigen theme agnoster # sergiivelykodnyi/vigeo-zsh-theme
 
 # Tell antigen that you're done
 antigen apply
