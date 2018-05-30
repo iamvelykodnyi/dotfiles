@@ -35,7 +35,7 @@ This file you can use for add custom commands which you don’t want to commit t
 ## Updating zsh plugins
 Just run in a terminal:
 ```
-$ antigen update
+$ antigen update && antigen cache-gen
 ```
 
 

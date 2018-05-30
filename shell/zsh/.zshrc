@@ -3,7 +3,7 @@ source $HOME/antigen.zsh
 # Load the oh-my-zsh's library
 antigen use oh-my-zsh
 # Load the oh-my-zsh's plugins
-antigen bundle git
+antigen bundle gitfast
 antigen bundle vi-mode
 antigen bundle npm
 antigen bundle node
@@ -18,7 +18,8 @@ antigen theme sergiivelykodnyi/vigeo-zsh-theme
 antigen apply
 
 # Aliases
-alias zshconfig="code ~/.zshrc"
+alias zsh-config="code ~/.zshrc"
+alias zsh-update-plugin="antigen update && antigen cache-gen"
 
 # Load the shell dotfiles, and then some:
 # * ~/.path can be used to extend `$PATH`.
