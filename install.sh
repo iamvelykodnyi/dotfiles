@@ -30,5 +30,8 @@ if [ -f ~/.zshrc ]; then
 fi
 ln -s ${BASE_DIR}/shell/zsh/.zshrc ~/.zshrc
 
-# TODO: Add vim configuration
-# vim
+echo "Install vim configuration..."
+if [ -f ~/.vimrc ]; then
+  cp ~/.vimrc ~/.vimrc-backup
+fi
+ln -s ${BASE_DIR}/vim/.vimrc ~/.vimrc
