@@ -31,7 +31,7 @@ prompt_git() {
 
       # Check for unstaged changes.
       if ! $(git diff-files --quiet --ignore-submodules --); then
-        s+='!';
+        s+='*';
       fi;
 
       # Check for untracked files.
@@ -53,9 +53,9 @@ prompt_git() {
       git rev-parse --short HEAD 2> /dev/null || \
       echo '(unknown)')";
 
-    [ -n "${s}" ] && s=" ${s}";
+    [ -n "${s}" ] && s=" [${s}]";
 
-    echo -e "${1}${branchName}${2}${s}";
+    echo -e "${1}[${branchName}]${2}${s}";
   else
     return;
   fi;
@@ -132,7 +132,7 @@ fi;
 # \[${color_name}\] - set color
 PS1="";
 # PS1=+"\n"; # newline
-# PS1+="\[${blue}\]\D{%T} "; # date
+PS1+="\[${blue}\][\D{%T}] "; # date
 # PS1+="\[${userStyle}\]\u "; # username
 # PS1+="\[${hostStyle}\]\h "; # host
 PS1+="\[${green}\]\w"; # working directory full path

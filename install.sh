@@ -18,18 +18,6 @@ ln -s ${BASE_DIR}/shell/bash/.bash_profile ~/.bash_profile
 ln -s ${BASE_DIR}/shell/bash/.bash_prompt ~/.bash_prompt
 ln -s ${BASE_DIR}/shell/bash/.bashrc ~/.bashrc
 
-echo "Set zsh to default shell..."
-chsh -s $(which zsh)
-
-echo "Install antigen..."
-curl -L git.io/antigen > ~/antigen.zsh
-
-echo "Install zsh configuration..."
-if [ -f ~/.zshrc ]; then
-  cp ~/.zshrc ~/.zshrc-backup
-fi
-ln -s ${BASE_DIR}/shell/zsh/.zshrc ~/.zshrc
-
 echo "Install vim configuration..."
 if [ -f ~/.vimrc ]; then
   cp ~/.vimrc ~/.vimrc-backup
