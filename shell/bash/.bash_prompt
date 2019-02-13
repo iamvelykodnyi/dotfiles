@@ -141,7 +141,7 @@ prompt_git() {
     changes="${staged}/${changed}/${untracked}/${stashed}"
     remote="${num_behind}↓/${num_ahead}↑";
 
-    echo -e "${1}[${branch}]${2} [${changes}] [${remote}]";
+    echo -e "${1}[${branch}]${2} [${changes}]${3} [${remote}]";
   else
     return;
   fi;
@@ -222,8 +222,8 @@ PS1="";
 PS1+="\[${blue}\][\D{%T}] "; # date
 # PS1+="\[${userStyle}\]\u "; # username
 # PS1+="\[${hostStyle}\]\h "; # host
-PS1+="\[${green}\]\w"; # working directory full path
-PS1+="\$(prompt_git \" \[${violet}\]\" \"\[${blue}\]\")"; # Git repository details
+PS1+="\[${green}\][\w]"; # working directory full path
+PS1+="\$(prompt_git \" \[${violet}\]\" \"\[${yellow}\]\" \"\[${blue}\]\")"; # Git repository details
 PS1+="\n";
 PS1+="\[${green}\]> \[${reset}\]"; # `$` (and reset color)
 export PS1;
