@@ -17,16 +17,23 @@ all_lines() { echo "${1}" | grep -v "^$" | wc -l ; }
 prompt_git() {
   # Check if the current directory is in a Git repository.
   if [ $(git rev-parse --is-inside-work-tree &>/dev/null; echo "${?}") == '0' ]; then
-    local s='';
-    local branchName='';
-    local gitstatus=$( git diff --name-status 2>&1 )
-    local staged_files=$( git diff --staged --name-status )
-    local num_changed=$(( $( all_lines "${gitstatus}" ) - $( count_lines "${gitstatus}" U ) ))
-    local num_conflicts=$( count_lines "${staged_files}" U )
-    local num_staged=$(( $( all_lines "${staged_files}" ) - num_conflicts ))
-    local num_untracked=$( git ls-files --others --exclude-standard $(git rev-parse --show-cdup) | wc -l )
-    local num_stashed=0
-    local stash_file="$( git rev-parse --git-dir )/logs/refs/stash"
+    local gitstatus=$( git diff --name-status 2>&1 );
+    local staged_files=$( git diff --staged --name-status );
+    local stash_file="$( git rev-parse --git-dir )/logs/refs/stash";
+    local branch='';
+    local changes='';
+    local changed='';
+    local conflicts='';
+    local staged='';
+    local untracked='';
+    local stashed='';
+    local num_changed=$(( $( all_lines "${gitstatus}" ) - $( count_lines "${gitstatus}" U ) ));
+    local num_conflicts=$( count_lines "${staged_files}" U );
+    local num_staged=$(( $( all_lines "${staged_files}" ) - num_conflicts ));
+    local num_untracked=$( git ls-files --others --exclude-standard $(git rev-parse --show-cdup) | wc -l );
+    local num_stashed=0;
+    local num_ahead='';
+    local num_behind='';
 
     # check if the current directory is in .git before running git checks
     if [ "$(git rev-parse --is-inside-git-dir 2> /dev/null)" == 'false' ]; then
@@ -41,37 +48,100 @@ prompt_git() {
       fi
 
       # Check for uncommitted changes in the index.
-      if ! $(git diff --quiet --ignore-submodules --cached); then
-        s+="+${num_staged}";
-      fi;
+      # if ! $(git diff --quiet --ignore-submodules --cached); then
+        staged="+${num_staged}";
+      # fi;
 
       # Check for unstaged changes.
-      if ! $(git diff-files --quiet --ignore-submodules --); then
-        s+="*${num_changed}";
-      fi;
+      # if ! $(git diff-files --quiet --ignore-submodules --); then
+        changed="*${num_changed}";
+      # fi;
 
       # Check for untracked files.
-      if [ -n "$(git ls-files --others --exclude-standard)" ]; then
-        s+="?${num_untracked// /}";
-      fi;
+      # if [ -n "$(git ls-files --others --exclude-standard)" ]; then
+        untracked="?${num_untracked// /}";
+      # fi;
 
       # Check for stashed files.
-      if $(git rev-parse --verify refs/stash &>/dev/null); then
-        s+="\$${num_stashed}";
-      fi;
+      # if $(git rev-parse --verify refs/stash &>/dev/null); then
+        stashed="\$${num_stashed}";
+      # fi;
 
     fi;
 
     # Get the short symbolic ref.
     # If HEAD isn’t a symbolic ref, get the short SHA for the latest commit
     # Otherwise, just give up.
-    branchName="$(git symbolic-ref --quiet --short HEAD 2> /dev/null || \
+    branch="$(git symbolic-ref --quiet --short HEAD 2> /dev/null || \
       git rev-parse --short HEAD 2> /dev/null || \
       echo '(unknown)')";
 
-    [ -n "${s}" ] && s=" [${s}]";
+    remote=""
+    # upstream=""
 
-    echo -e "${1}[${branchName}]${2}${s}";
+    if [[ -z "${branch-}" ]]; then
+      tag=$( git describe --tags --exact-match 2>/dev/null )
+      if [[ -n "${tag}" ]]; then
+        branch="${tag}"
+      else
+        branch="_PREHASH_$( git rev-parse --short HEAD )"
+      fi
+    else
+      remote_name=$( git config "branch.${branch}.remote" )
+
+      if [[ -n "$remote_name" ]]; then
+        merge_name=$( git config "branch.${branch}.merge" )
+      else
+        remote_name='origin'
+        merge_name="refs/heads/${branch}"
+      fi
+
+      if [[ "${remote_name}" == '.' ]]; then
+        remote_ref="${merge_name}"
+      else
+        remote_ref="refs/remotes/${remote_name}/${merge_name##refs/heads/}"
+      fi
+
+      # detect if the local branch have a remote tracking branch
+      # upstream=$( git rev-parse --abbrev-ref "${branch}"@{upstream} 2>&1 )
+
+      if [[ "${?}" == 0 ]]; then
+        # get the revision list, and count the leading "<" and ">"
+        revgit=$( git rev-list --left-right "${remote_ref}...HEAD" 2>/dev/null )
+        if [[ "${?}" == 0 ]]; then
+          num_revs=$( all_lines "${revgit}" )
+          num_ahead=$( count_lines "${revgit}" "^>" )
+          num_behind=$(( num_revs - num_ahead ))
+          # if (( num_behind > 0 )) ; then
+          #   remote=" ${num_behind}↓"
+          # fi
+          # if (( num_ahead > 0 )) ; then
+          #   remote+=" ${num_ahead}↑"
+          # fi
+        fi
+      # else
+        # remote='_NO_REMOTE_TRACKING_'
+        # unset upstream
+      fi
+    fi
+
+    # if [[ -z "${remote:+x}" ]] ; then
+    #   remote=''
+    # fi
+
+    # if [[ -z "${upstream:+x}" ]] ; then
+    #   upstream='^'
+    # fi
+
+    # s=''
+    # [ -n "${s}" ] && s="[${s}]";
+    # if [ -n "${s}" ]; then
+    #   echo -e "${s}";
+    # fi
+    changes="${staged}/${changed}/${untracked}/${stashed}"
+    remote="${num_behind}↓/${num_ahead}↑";
+
+    echo -e "${1}[${branch}]${2} [${changes}] [${remote}]";
   else
     return;
   fi;
@@ -138,6 +208,7 @@ else
 fi;
 
 # Set the terminal title and prompt.
+# [00:00:00] ~/Path/to/somewhere [branch-name] [+00/*00/?00/$00] [00↓/00↑]
 # \n - new line
 # \w - current path
 # \t - time
