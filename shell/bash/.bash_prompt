@@ -65,6 +65,7 @@ symbol_changed="*";
 symbol_untracked="?";
 symbol_stashed="$";
 symbol_branch=""
+symbol_conflict="×"
 
 count_lines() { echo "${1}" | egrep -c "^${2}" ; }
 all_lines() { echo "${1}" | grep -v "^$" | wc -l ; }
@@ -76,6 +77,8 @@ prompt_git() {
     local staged_files=$( git diff --staged --name-status );
     local stash_file="$( git rev-parse --git-dir )/logs/refs/stash";
     local branch='';
+    local remote='';
+    local upstream='';
     local changes='';
     local changed='';
     local conflicts='';
@@ -83,14 +86,13 @@ prompt_git() {
     local untracked='';
     local stashed='';
     local num_changed='';
-    # local num_conflicts=$( count_lines "${staged_files}" U );
+    local num_staged_conflicts=$( count_lines "${staged_files}" U );
+    local num_changed_conflicts=$( count_lines "${gitstatus}" U );
     local num_staged='';
     local num_untracked='';
     local num_stashed=0;
     local num_ahead='';
     local num_behind='';
-    local remote='';
-    # local upstream='';
 
     # check if the current directory is in .git before running git checks
     if [ "$(git rev-parse --is-inside-git-dir 2> /dev/null)" == 'false' ]; then
@@ -98,15 +100,21 @@ prompt_git() {
       # Ensure the index is up to date.
       git update-index --really-refresh -q &>/dev/null;
 
+      #
+      if (( num_staged_conflicts > 0 )) ; then
+        changes+="${symbol_conflict}${num_staged_conflicts}";
+      fi
+
       # Check for uncommitted changes in the index.
       if ! $(git diff --quiet --ignore-submodules --cached); then
-        num_staged=$(( $( all_lines "${staged_files}" ) - num_conflicts ));
-        changes="${symbol_staged}${num_staged}";
+        num_staged=$(( $( all_lines "${staged_files}" ) - num_staged_conflicts ));
+        [ -n "${changes}" ] && changes="${changes}/";
+        changes+="${symbol_staged}${num_staged}";
       fi;
 
       # Check for unstaged changes.
       if ! $(git diff-files --quiet --ignore-submodules --); then
-        num_changed=$(( $( all_lines "${gitstatus}" ) - $( count_lines "${gitstatus}" U ) ));
+        num_changed=$(( $( all_lines "${gitstatus}" ) - num_changed_conflicts));
         [ -n "${changes}" ] && changes="${changes}/";
         changes+="${symbol_changed}${num_changed}";
       fi;
@@ -138,63 +146,40 @@ prompt_git() {
       git rev-parse --short HEAD 2> /dev/null || \
       echo '(unknown)')";
 
-    if [[ -z "${branch-}" ]]; then
-      tag=$( git describe --tags --exact-match 2>/dev/null )
-      if [[ -n "${tag}" ]]; then
-        branch="${tag}"
-      else
-        branch="_PREHASH_$( git rev-parse --short HEAD )"
-      fi
+    remote_name=$( git config "branch.${branch}.remote" )
+
+    if [[ -n "$remote_name" ]]; then
+      merge_name=$( git config "branch.${branch}.merge" )
     else
-      remote_name=$( git config "branch.${branch}.remote" )
-
-      if [[ -n "$remote_name" ]]; then
-        merge_name=$( git config "branch.${branch}.merge" )
-      else
-        remote_name='origin'
-        merge_name="refs/heads/${branch}"
-      fi
-
-      if [[ "${remote_name}" == '.' ]]; then
-        remote_ref="${merge_name}"
-      else
-        remote_ref="refs/remotes/${remote_name}/${merge_name##refs/heads/}"
-      fi
-
-      # detect if the local branch have a remote tracking branch
-      # upstream=$( git rev-parse --abbrev-ref "${branch}"@{upstream} 2>&1 )
-
-      if [[ "${?}" == 0 ]]; then
-        # get the revision list, and count the leading "<" and ">"
-        revgit=$( git rev-list --left-right "${remote_ref}...HEAD" 2>/dev/null )
-        if [[ "${?}" == 0 ]]; then
-          num_revs=$( all_lines "${revgit}" )
-          num_ahead=$( count_lines "${revgit}" "^>" )
-          num_behind=$(( num_revs - num_ahead ))
-          # if (( num_behind > 0 )) ; then
-          #   remote=" ${num_behind}↓"
-          # fi
-          # if (( num_ahead > 0 )) ; then
-          #   remote+=" ${num_ahead}↑"
-          # fi
-        fi
-      # else
-        # remote='_NO_REMOTE_TRACKING_'
-        # unset upstream
-      fi
+      remote_name='origin'
+      merge_name="refs/heads/${branch}"
     fi
 
-    # if [[ -z "${remote:+x}" ]] ; then
-    #   remote=''
-    # fi
+    if [[ "${remote_name}" == '.' ]]; then
+      remote_ref="${merge_name}"
+    else
+      remote_ref="refs/remotes/${remote_name}/${merge_name##refs/heads/}"
+    fi
 
-    # if [[ -z "${upstream:+x}" ]] ; then
-    #   upstream='^'
-    # fi
+    # detect if the local branch have a remote tracking branch
+    upstream=$( git rev-parse --abbrev-ref "${branch}"@{upstream} 2>&1 )
 
-    remote="${num_behind}${symbol_pull}/${num_ahead}${symbol_push}";
+    if [[ "${?}" == 0 ]]; then
+      $( git fetch "${remote_name}" "${branch}" --quiet )
+      # get the revision list, and count the leading "<" and ">"
+      revgit=$( git rev-list --left-right "${remote_ref}...HEAD" 2>/dev/null )
+      if [[ "${?}" == 0 ]]; then
+        num_revs=$( all_lines "${revgit}" )
+        num_ahead=$( count_lines "${revgit}" "^>" )
+        num_behind=$(( num_revs - num_ahead ))
+        remote="${num_behind}${symbol_pull}/${num_ahead}${symbol_push}";
+      fi
+    else
+      remote=''
+      upstream=''
+    fi
 
-    echo -e "${1}${symbol_branch} ${branch}${2} ${changes}${3} ${remote}";
+    echo -e "${1}${symbol_branch} ${branch} ${2}${changes} ${3}${remote}";
   else
     return;
   fi;
