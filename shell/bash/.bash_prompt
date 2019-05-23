@@ -165,7 +165,7 @@ prompt_git() {
     upstream=$( git rev-parse --abbrev-ref "${branch}"@{upstream} 2>&1 )
 
     if [[ "${?}" == 0 ]]; then
-      $( git fetch "${remote_name}" "${branch}" --quiet )
+      # $( git fetch "${remote_name}" "${branch}" --quiet )
       # get the revision list, and count the leading "<" and ">"
       revgit=$( git rev-list --left-right "${remote_ref}...HEAD" 2>/dev/null )
       if [[ "${?}" == 0 ]]; then
