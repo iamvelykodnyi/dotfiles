@@ -212,7 +212,7 @@ prompt_git() {
 PS1='';
 
 # date
-PS1+="\[${blue}\]\D{%T} ";
+# PS1+="\[${blue}\]\D{%T} ";
 
 # username
 # PS1+="\[${userStyle}\]\u ";
@@ -221,13 +221,14 @@ PS1+="\[${blue}\]\D{%T} ";
 # PS1+="\[${hostStyle}\]\h ";
 
 # working directory full path
-PS1+="\[${green}\]\w";
+# PS1+="\[${green}\]\w";
 
 # Git repository details
-PS1+="\$(prompt_git \" \[${violet}\]\" \"\[${yellow}\]\" \"\[${blue}\]\")";
+# PS1+="\$(prompt_git \" \[${violet}\]\" \"\[${yellow}\]\" \"\[${blue}\]\")";
 
 # Enter
-PS1+="\n\[${green}\]> \[${reset}\]";
+# PS1+="\n\[${green}\]> \[${reset}\]";
+PS1+="\[${green}\]=> \[${reset}\]";
 export PS1;
 
 PS2="\[${yellow}\]→ \[${reset}\]";
