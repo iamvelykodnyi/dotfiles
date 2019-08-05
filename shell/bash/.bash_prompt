@@ -224,11 +224,11 @@ PS1='';
 # PS1+="\[${green}\]\w";
 
 # Git repository details
-# PS1+="\$(prompt_git \" \[${violet}\]\" \"\[${yellow}\]\" \"\[${blue}\]\")";
+PS1+="\$(prompt_git \"\[${violet}\]\" \"\[${yellow}\]\" \"\[${blue}\]\")";
 
 # Enter
 # PS1+="\n\[${green}\]> \[${reset}\]";
-PS1+="\[${green}\]=> \[${reset}\]";
+PS1+="\n\[${green}\]=> \[${reset}\]";
 export PS1;
 
 PS2="\[${yellow}\]→ \[${reset}\]";
