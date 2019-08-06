@@ -221,7 +221,7 @@ PS1='';
 # PS1+="\[${hostStyle}\]\h ";
 
 # working directory full path
-# PS1+="\[${green}\]\w";
+PS1+="\[${green}\]\W ";
 
 # Git repository details
 PS1+="\$(prompt_git \"\[${violet}\]\" \"\[${yellow}\]\" \"\[${blue}\]\")";
