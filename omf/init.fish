@@ -1,4 +1,6 @@
 # TODO: move to custom theme.
+# TODO: create functions for repository state counts.
+# [⋊>] [~/Path/to/somewhere] [] [branch-name] [state:{+00*00?00$00}|""]|[↓/↑]
 function fish_prompt
   set -l last_command_status $status
   set -l cwd
@@ -9,19 +11,23 @@ function fish_prompt
     set cwd (prompt_pwd)
   end
 
-  set -l fish     "⋊>"
-  set -l ahead    "↑"
-  set -l behind   "↓"
-  set -l diverged "⥄ "
-  set -l dirty    "⨯"
-  set -l none     "◦"
-  set -l branch   ""
+  set -l fish       "⋊>"
+  set -l branch     ""
+  set -l ahead      "↑"
+  set -l behind     "↓"
+  set -l diverged   "⥄ "
+  set -l staged     "+"
+  set -l dirty      "*"
+  set -l untracked  "?"
+  set -l stashed    "\$"
+  set -l none       ""
 
-  set -l normal_color     (set_color normal)
-  set -l success_color    (set_color $fish_color_cwd 2> /dev/null; or set_color cyan --bold)
-  set -l error_color      (set_color $fish_color_error 2> /dev/null; or set_color red --bold)
-  set -l directory_color  (set_color $fish_color_quote 2> /dev/null; or set_color brown)
-  set -l repository_color (set_color $fish_color_cwd 2> /dev/null; or set_color green)
+  set -l normal_color           (set_color normal)
+  set -l success_color          (set_color cyan --bold)
+  set -l error_color            (set_color red --bold)
+  set -l directory_color        (set_color green)
+  set -l repository_color       (set_color purple)
+  set -l repository_state_color (set_color yellow)
 
   if test $last_command_status -eq 0
     echo -n -s $success_color $fish $normal_color
@@ -37,13 +43,31 @@ function fish_prompt
     end
 
     echo -n -s " " $directory_color $cwd $normal_color
-    echo -n -s $repository_color " " $branch " " (git_branch_name) $normal_color " "
 
-    if git_is_touched
-      echo -n -s $directory_color $dirty $normal_color
-    else
-      echo -n -s (git_ahead $ahead $behind $diverged $none)
+    # Start: repository state marks.
+    echo -n -s $repository_color " " $branch " " (git_branch_name) " " $repository_state_color
+
+    if git_is_staged
+      echo -n -s $staged (git diff --staged --name-status | count)
     end
+
+    if git_is_dirty
+      # echo -n -s test -n "$repository_state"; and echo ""; or echo ""
+      echo -n -s $dirty (git diff --name-status | count)
+    end
+
+    if test (count (git_untracked)) -gt 0
+      echo -n -s $untracked (count (git_untracked))
+    end
+
+    if git_is_stashed
+      echo -n -s $stashed (git stash list | count)
+    end
+
+    echo -n -s " " $success_color (git_ahead $ahead $behind $diverged $none)
+
+    # End: repository state marks.
+    echo -n -s $normal_color
   else
     echo -n -s " " $directory_color $cwd $normal_color
   end
