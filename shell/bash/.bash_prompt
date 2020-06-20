@@ -45,6 +45,7 @@ fi;
 # bakcyn='\e[46m'   # Cyan
 # bakwht='\e[47m'   #
 # txtrst='\e[0m'    # Text Reset
+
 reset="\e[0m";
 black="\e[1;30m";
 blue="\e[1;34m";
@@ -186,18 +187,18 @@ prompt_git() {
 }
 
 # Highlight the user name when logged in as root.
-# if [[ "${USER}" == "root" ]]; then
-#   userStyle="${red}";
-# else
-#   userStyle="${orange}";
-# fi;
+if [[ "${USER}" == "root" ]]; then
+  userStyle="${red}";
+else
+  userStyle="${orange}";
+fi;
 
 # # Highlight the hostname when connected via SSH.
-# if [[ "${SSH_TTY}" ]]; then
-#   hostStyle="${bold}${red}";
-# else
-#   hostStyle="${yellow}";
-# fi;
+if [[ "${SSH_TTY}" ]]; then
+  hostStyle="${bold}${red}";
+else
+  hostStyle="${yellow}";
+fi;
 
 # Set the terminal title and prompt.
 # [00:00:00] [~/Path/to/somewhere] [branch-name] [+00/*00/?00/$00] [00↓/00↑]
@@ -212,13 +213,13 @@ prompt_git() {
 PS1='';
 
 # date
-# PS1+="\[${blue}\]\D{%T} ";
+PS1+="\[${blue}\]\D{%T} ";
 
 # username
-# PS1+="\[${userStyle}\]\u ";
+PS1+="\[${userStyle}\]\u ";
 
 # host
-# PS1+="\[${hostStyle}\]\h ";
+PS1+="\[${hostStyle}\]\h ";
 
 # working directory full path
 PS1+="\[${green}\]\W ";
@@ -227,7 +228,6 @@ PS1+="\[${green}\]\W ";
 PS1+="\$(prompt_git \"\[${violet}\]\" \"\[${yellow}\]\" \"\[${blue}\]\")";
 
 # Enter
-# PS1+="\n\[${green}\]> \[${reset}\]";
 PS1+="\n\[${green}\]=> \[${reset}\]";
 export PS1;
 
