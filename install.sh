@@ -5,7 +5,7 @@ echo "Install fish functions..."
 if [ ! -d ~/.config/omf/functions ]; then
   mkdir ~/.config/omf/functions
 fi
-for file in {git_dirty_count,git_staged_count,git_stashed_count,git_untracked_count}.fish; do
+for file in {git_dirty_count,git_staged_count,git_stashed_count,git_untracked_count,git_ahead_count}.fish; do
   if [ -f ~/.config/omf/functions/${file} ]; then
     rm ~/.config/omf/functions/${file}
   fi

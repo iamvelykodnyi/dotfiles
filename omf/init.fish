@@ -1,7 +1,7 @@
 # Prompt sting template:
-# [⋊>] [~/current/dir/path] [] [branch-name] [state:{+00*00?00$00}|""]|[↓/↑]
+# [⋊>] [~/current/dir/path] [] [branch-name] [state:{+00/*00/?00/$00}|""]|[↓00 ↑00]
 # +00 - count of staged files.
-# *00 - count of tracked files which were changed.
+# *00 - count of changed files.
 # ?00 - count of untracked files.
 # $00 - count of stashes.
 # ↓/↑ - ahead/behind commits.
@@ -20,14 +20,10 @@ function fish_prompt
 
   set -l fish      "⋊>"
   set -l branch    ""
-  set -l ahead     "↑"
-  set -l behind    "↓"
-  set -l diverged  "↑↓"
   set -l staged    "+"
   set -l dirty     "*"
   set -l untracked "?"
   set -l stashed   "\$"
-  set -l none      ""
   set -l git_state ""
 
   set -l normal_color    (set_color normal)
@@ -96,7 +92,7 @@ function fish_prompt
     end
 
     # Add ahead/behind symbols.
-    set -a git_state $success_color (git_ahead $ahead $behind $diverged $none)
+    set -a git_state $success_color (git_ahead_count)
 
     # Print repository state symbols.
     echo -n -s $git_state $normal_color
