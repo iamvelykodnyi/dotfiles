@@ -1,7 +1,14 @@
-# TODO: move to custom theme.
-# TODO: create functions for repository state counts.
-# [⋊>] [~/Path/to/somewhere] [] [branch-name] [state:{+00*00?00$00}|""]|[↓/↑]
+# Prompt sting template:
+# [⋊>] [~/current/dir/path] [] [branch-name] [state:{+00*00?00$00}|""]|[↓/↑]
+# +00 - count of staged files.
+# *00 - count of tracked files which were changed.
+# ?00 - count of untracked files.
+# $00 - count of stashes.
+# ↓/↑ - ahead/behind commits.
 function fish_prompt
+  # TODO: move to custom theme.
+  # TODO: add ahead/behind counts.
+  # TODO: git_has_untracked functions.
   set -l last_command_status $status
   set -l cwd
 
@@ -11,23 +18,24 @@ function fish_prompt
     set cwd (prompt_pwd)
   end
 
-  set -l fish       "⋊>"
-  set -l branch     ""
-  set -l ahead      "↑"
-  set -l behind     "↓"
-  set -l diverged   "⥄ "
-  set -l staged     "+"
-  set -l dirty      "*"
-  set -l untracked  "?"
-  set -l stashed    "\$"
-  set -l none       ""
+  set -l fish      "⋊>"
+  set -l branch    ""
+  set -l ahead     "↑"
+  set -l behind    "↓"
+  set -l diverged  "↑↓"
+  set -l staged    "+"
+  set -l dirty     "*"
+  set -l untracked "?"
+  set -l stashed   "\$"
+  set -l none      ""
+  set -l git_state ""
 
-  set -l normal_color           (set_color normal)
-  set -l success_color          (set_color cyan --bold)
-  set -l error_color            (set_color red --bold)
-  set -l directory_color        (set_color green)
-  set -l repository_color       (set_color purple)
-  set -l repository_state_color (set_color yellow)
+  set -l normal_color    (set_color normal)
+  set -l success_color   (set_color green)
+  set -l error_color     (set_color red)
+  set -l directory_color (set_color green)
+  set -l branch_color    (set_color blue)
+  set -l git_state_color (set_color red)
 
   if test $last_command_status -eq 0
     echo -n -s $success_color $fish $normal_color
@@ -43,31 +51,55 @@ function fish_prompt
     end
 
     echo -n -s " " $directory_color $cwd $normal_color
+    echo -n -s $branch_color " " $branch " " (git_branch_name) " "
+    echo -n -s $git_state_color
 
-    # Start: repository state marks.
-    echo -n -s $repository_color " " $branch " " (git_branch_name) " " $repository_state_color
-
+    ### Set repository state symbols. ###
+    # Add symbol and count of staged files.
     if git_is_staged
-      echo -n -s $staged (git diff --staged --name-status | count)
+      set -a git_state $staged (git_staged_count)
     end
 
+    # Add symbol and count of changed files.
     if git_is_dirty
-      # echo -n -s test -n "$repository_state"; and echo ""; or echo ""
-      echo -n -s $dirty (git diff --name-status | count)
+      # Add separator symbol if outpun is not empty.
+      if test -n "$git_state"
+        set -a git_state "/"
+      end
+
+      set -a git_state $dirty (git_dirty_count)
     end
 
-    if test (count (git_untracked)) -gt 0
-      echo -n -s $untracked (count (git_untracked))
+    # Add symbol and count of untracked files.
+    if test (git_untracked_count) -gt 0
+      # Add separator symbol if outpun is not empty.
+      if test -n "$git_state"
+        set -a git_state "/"
+      end
+
+      set -a git_state $untracked (git_untracked_count)
     end
 
+    # Add symbol and count of stashed changes.
     if git_is_stashed
-      echo -n -s $stashed (git stash list | count)
+      # Add separator symbol if outpun is not empty.
+      if test -n "$git_state"
+        set -a git_state "/"
+      end
+
+      set -a git_state $stashed (git_stashed_count)
     end
 
-    echo -n -s " " $success_color (git_ahead $ahead $behind $diverged $none)
+    # Add separator symbol if outpun is not empty.
+    if test -n "$git_state"
+      set -a git_state " "
+    end
 
-    # End: repository state marks.
-    echo -n -s $normal_color
+    # Add ahead/behind symbols.
+    set -a git_state $success_color (git_ahead $ahead $behind $diverged $none)
+
+    # Print repository state symbols.
+    echo -n -s $git_state $normal_color
   else
     echo -n -s " " $directory_color $cwd $normal_color
   end

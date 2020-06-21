@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# TODO: Add removing of functions.
 echo "Uninstall fish configuration..."
 for file in ~/.config/omf/{bundle,channel,theme,init.fish}; do
   if [ -f ${file} ]; then

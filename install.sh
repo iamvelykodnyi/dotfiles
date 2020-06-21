@@ -1,6 +1,19 @@
 #!/bin/bash
 BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+echo "Install fish functions..."
+if [ ! -d ~/.config/omf/functions ]; then
+  mkdir ~/.config/omf/functions
+fi
+for file in {git_dirty_count,git_staged_count,git_stashed_count,git_untracked_count}.fish; do
+  if [ -f ~/.config/omf/functions/${file} ]; then
+    rm ~/.config/omf/functions/${file}
+  fi
+
+  ln -s ${BASE_DIR}/omf/functions/${file} ~/.config/omf/functions/${file}
+done;
+unset file;
+
 echo "Install fish configuration..."
 for file in {bundle,channel,theme,init.fish}; do
   if [ -f ~/.config/omf/${file} ]; then
