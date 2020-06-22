@@ -18,7 +18,7 @@ function fish_prompt
     set cwd (prompt_pwd)
   end
 
-  set -l fish      "⋊>"
+  set -l fish      "><>"
   set -l branch    ""
   set -l staged    "+"
   set -l dirty     "*"
@@ -100,5 +100,5 @@ function fish_prompt
     echo -n -s " " $directory_color $cwd $normal_color
   end
 
-  echo -n -s -e "\n" $directory_color "=> " $normal_color
+  echo -n -s -e "\n" $directory_color "==> " $normal_color
 end
