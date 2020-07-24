@@ -24,29 +24,27 @@ done;
 unset file;
 
 # TODO: rewrite it to for-in loop lake above.
-# ln -s ${BASE_DIR}/omf/channel ~/.config/omf/channel
-# ln -s ${BASE_DIR}/omf/theme ~/.config/omf/theme
-# ln -s ${BASE_DIR}/omf/init.fish ~/.config/omf/init.fish
+ln -s ${BASE_DIR}/mvm/default-packages ~/.nvm
 
-# echo "Install git configuration..."
-# cp ${BASE_DIR}/git/.gituser ~/.gituser
-# ln -s ${BASE_DIR}/git/.gitconfig ~/.gitconfig
-# ln -s ${BASE_DIR}/git/.gitexcludes ~/.gitexcludes
-# ln -s ${BASE_DIR}/git/.git-completion.bash ~/.git-completion.bash
+echo "Install git configuration..."
+cp ${BASE_DIR}/git/.gituser ~/.gituser
+ln -s ${BASE_DIR}/git/.gitconfig ~/.gitconfig
+ln -s ${BASE_DIR}/git/.gitexcludes ~/.gitexcludes
+ln -s ${BASE_DIR}/git/.git-completion.bash ~/.git-completion.bash
 
-# echo "Install shell files..."
-# cp ${BASE_DIR}/shell/source/.extra ~/.extra
-# ln -s ${BASE_DIR}/shell/source/.exports ~/.exports
-# ln -s ${BASE_DIR}/shell/source/.aliases ~/.aliases
-# ln -s ${BASE_DIR}/shell/source/.functions ~/.functions
+echo "Install shell files..."
+cp ${BASE_DIR}/shell/source/.extra ~/.extra
+ln -s ${BASE_DIR}/shell/source/.exports ~/.exports
+ln -s ${BASE_DIR}/shell/source/.aliases ~/.aliases
+ln -s ${BASE_DIR}/shell/source/.functions ~/.functions
 
-# echo "Install bash files..."
-# ln -s ${BASE_DIR}/shell/bash/.bash_profile ~/.bash_profile
-# ln -s ${BASE_DIR}/shell/bash/.bash_prompt ~/.bash_prompt
-# ln -s ${BASE_DIR}/shell/bash/.bashrc ~/.bashrc
+echo "Install bash files..."
+ln -s ${BASE_DIR}/shell/bash/.bash_profile ~/.bash_profile
+ln -s ${BASE_DIR}/shell/bash/.bash_prompt ~/.bash_prompt
+ln -s ${BASE_DIR}/shell/bash/.bashrc ~/.bashrc
 
-# echo "Install vim configuration..."
-# if [ -f ~/.vimrc ]; then
-#   cp ~/.vimrc ~/.vimrc-backup
-# fi
-# ln -s ${BASE_DIR}/vim/.vimrc ~/.vimrc
+echo "Install vim configuration..."
+if [ -f ~/.vimrc ]; then
+  cp ~/.vimrc ~/.vimrc-backup
+fi
+ln -s ${BASE_DIR}/vim/.vimrc ~/.vimrc
