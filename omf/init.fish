@@ -19,7 +19,7 @@ function fish_prompt
   end
 
   set -l fish      "><>"
-  set -l branch    ""
+  # set -l branch    ""
   set -l staged    "+"
   set -l dirty     "*"
   set -l untracked "?"
@@ -47,7 +47,8 @@ function fish_prompt
     end
 
     echo -n -s " " $directory_color $cwd $normal_color
-    echo -n -s $branch_color " " $branch " " (git_branch_name) " "
+    # echo -n -s $branch_color " " $branch " " (git_branch_name) " "
+    echo -n -s $branch_color " " (git_branch_name) " "
     echo -n -s $git_state_color
 
     ### Set repository state symbols. ###
