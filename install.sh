@@ -1,6 +1,8 @@
 #!/bin/bash
 BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# Fish Shell https://fishshell.com
+# The Fishshell Framework https://github.com/oh-my-fish/oh-my-fish
 echo "Install fish functions..."
 if [ ! -d ~/.config/omf/functions ]; then
   mkdir ~/.config/omf/functions
@@ -23,26 +25,24 @@ for file in {bundle,channel,theme,init.fish,before.init.fish}; do
 done;
 unset file;
 
-# TODO: rewrite it to for-in loop lake above.
-ln -s ${BASE_DIR}/mvm/default-packages ~/.nvm
+# Node Version Manager: https://github.com/nvm-sh/nvm
+echo "Install nvm configuration..."
+ln -s ${BASE_DIR}/nvm/default-packages ~/.nvm
 
+# Git: https://git-scm.com
 echo "Install git configuration..."
+if [ -f ~/.gituser ]; then
+  cp ~/.gituser ~/.gituser-backup
+fi
 cp ${BASE_DIR}/git/.gituser ~/.gituser
-ln -s ${BASE_DIR}/git/.gitconfig ~/.gitconfig
-ln -s ${BASE_DIR}/git/.gitexcludes ~/.gitexcludes
-# ln -s ${BASE_DIR}/git/.git-completion.bash ~/.git-completion.bash
+for file in {.gitconfig,.gitexcludes,}; do
+  if [ -f ~/${file} ]; then
+    rm ~/${file}
+  fi
+  ln -s ${BASE_DIR}/git/${file} ~/${file}
+done;
 
-echo "Install shell files..."
-# cp ${BASE_DIR}/shell/source/.extra ~/.extra
-# ln -s ${BASE_DIR}/shell/source/.exports ~/.exports
-# ln -s ${BASE_DIR}/shell/source/.aliases ~/.aliases
-# ln -s ${BASE_DIR}/shell/source/.functions ~/.functions
-
-echo "Install bash files..."
-# ln -s ${BASE_DIR}/shell/bash/.bash_profile ~/.bash_profile
-# ln -s ${BASE_DIR}/shell/bash/.bash_prompt ~/.bash_prompt
-# ln -s ${BASE_DIR}/shell/bash/.bashrc ~/.bashrc
-
+# Vim.
 echo "Install vim configuration..."
 if [ -f ~/.vimrc ]; then
   cp ~/.vimrc ~/.vimrc-backup

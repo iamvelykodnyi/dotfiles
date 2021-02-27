@@ -1,9 +1,14 @@
-# Sergii Velykodnyi's Dotfiles
+# Dotfiles
 
-## Install
+## Installation
 
-In the beginning, you need to check installation the git, zsh in your system.
-  * For check git run this `git --version` if you don't see message like this `git version 2.17.0` you need to install git. For masOS you can run `brew install git`, for Ubuntu `sudo apt install git`.
+Before you start make sure you have already installed:
+* (Git)[https://git-scm.com]
+* (fish shell)[https://fishshell.com]
+* (Oh my fish)[https://github.com/oh-my-fish/oh-my-fish]
+* (nvm)[https://github.com/nvm-sh/nvm]
+
+All of these things you can install by (Homebrew)[https://brew.sh]
 
 ### Clone repository
 
@@ -12,24 +17,23 @@ $ git clone https://github.com/sergiivelykodnyi/dotfiles.git
 $ cd dotfiles
 ```
 
-### Install zsh/bash config
+### Update gituser file with your data
+
+```
+[user]
+  name = your name
+  email = your email
+```
+
+### Run following command
 if
 ```bash
 $ sh install.sh
 ```
 
-### Add user data for Git
+<!-- ### .extra -->
 
-Open the file `~/.gituser` and add your data:
-```
-[user]
-  name = enter your name
-  email = enter your email
-```
-
-### .extra
-
-This file you can use for add custom commands which you don’t want to commit to a public repository.
+<!-- This file you can use for add custom commands which you don’t want to commit to a public repository. -->
 
 ## License
 
