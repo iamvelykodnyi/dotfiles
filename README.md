@@ -16,7 +16,8 @@ $ cd dotfiles
 ```shell
 $ sh install-zsh.sh
 # zsh compinit: insecure directories
-$ sudo chmod -R 755 /usr/local/share/zsh; sudo chown -R root:staff /usr/local/share/zsh;
+$ sudo chown -R $(whoami) /usr/local/share/zsh /usr/local/share/zsh/site-functions
+$ chmod u+w /usr/local/share/zsh /usr/local/share/zsh/site-functions
 ```
 
 Open new terminal window with zsh shell and run

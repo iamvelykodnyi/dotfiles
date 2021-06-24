@@ -5,21 +5,11 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-
 source $HOME/antigen.zsh
 
 # Load the oh-my-zsh's library
 antigen use oh-my-zsh
-# Load the oh-my-zsh's plugins
-antigen bundle git
-antigen bundle vi-mode
-antigen bundle node
-antigen bundle npm
-antigen bundle nvm
-
-# Load other plugins
+# Load the plugins
 antigen bundle lukechilds/zsh-nvm
 
 # Load the theme
@@ -28,6 +18,14 @@ antigen theme romkatv/powerlevel10k
 
 # Tell antigen that you're done
 antigen apply
+
+# Use the oh-my-zsh's plugins
+plugins=(
+  gh
+  zsh-autocomplete
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+)
 
 # Aliases
 alias zshconfig="code ~/.zshrc"
