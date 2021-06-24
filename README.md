@@ -2,14 +2,6 @@
 
 ## Installation
 
-Before you start make sure you have already installed:
-* (Git)[https://git-scm.com]
-* (fish shell)[https://fishshell.com]
-* (Oh my fish)[https://github.com/oh-my-fish/oh-my-fish]
-* (nvm)[https://github.com/nvm-sh/nvm]
-
-All of these things you can install by (Homebrew)[https://brew.sh]
-
 ### Clone repository
 
 ```bash
@@ -17,23 +9,33 @@ $ git clone https://github.com/sergiivelykodnyi/dotfiles.git
 $ cd dotfiles
 ```
 
-### Update gituser file with your data
+### Run scripts
 
-```
-[user]
-  name = your name
-  email = your email
-```
+#### 1. Install zsh configs and packages
 
-### Run following command
-if
-```bash
-$ sh install.sh
+```shell
+$ sh install-zsh.sh
+# zsh compinit: insecure directories
+$ sudo chmod -R 755 /usr/local/share/zsh; sudo chown -R root:staff /usr/local/share/zsh;
 ```
 
-<!-- ### .extra -->
+Open new terminal window with zsh shell and run
 
-<!-- This file you can use for add custom commands which you don’t want to commit to a public repository. -->
+```shell
+$ p10k configure
+```
+
+for installing fonts and configuring prompt view.
+
+For Visual Studio Code: Open File → Preferences → Settings, enter `terminal.integrated.fontFamily` in the search box and set the value to `MesloLGS NF`.
+
+#### 2. Install zsh configs and packages
+
+You have to run previews step before.
+
+```shell
+$ sh install-other.sh
+```
 
 ## License
 

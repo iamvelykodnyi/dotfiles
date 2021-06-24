@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# TODO: Add removing of functions.
+# TODO: update this file regarding installation files.
+
 echo "Uninstall fish configuration..."
 for file in ~/.config/omf/{bundle,channel,theme,init.fish}; do
   if [ -f ${file} ]; then
@@ -9,7 +10,6 @@ for file in ~/.config/omf/{bundle,channel,theme,init.fish}; do
 done;
 unset file;
 
-# TODO: rewrite it to for-in loop lake above.
 echo "Uninstall git configuration..."
 rm ~/.gituser
 rm ~/.gitconfig
