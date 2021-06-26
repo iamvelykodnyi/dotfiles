@@ -7,28 +7,25 @@ fi
 
 source $HOME/antigen.zsh
 
-# Load the oh-my-zsh's library
-antigen use oh-my-zsh
-# Load the plugins
-antigen bundle lukechilds/zsh-nvm
+# Load the plugins.
+antigen bundle zsh-users/zsh-autosuggestions
+antigen bundle zsh-users/zsh-completions
+antigen bundle zsh-users/zsh-syntax-highlighting
 
-# Load the theme
+# Load the theme.
 # https://github.com/romkatv/powerlevel10k
 antigen theme romkatv/powerlevel10k
 
-# Tell antigen that you're done
+# Tell Antigen that you're done.
 antigen apply
-
-# Use the oh-my-zsh's plugins
-plugins=(
-  gh
-  zsh-autocomplete
-  zsh-autosuggestions
-  zsh-syntax-highlighting
-)
 
 # Aliases
 alias zshconfig="code ~/.zshrc"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# nvm sources.
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
