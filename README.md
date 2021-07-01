@@ -4,9 +4,12 @@
 
 ### Clone repository
 
-```bash
-$ git clone https://github.com/sergiivelykodnyi/dotfiles.git
-$ cd dotfiles
+```shell
+git clone https://github.com/sergiivelykodnyi/dotfiles.git
+```
+
+```shell
+cd dotfiles
 ```
 
 ### Run scripts
@@ -14,19 +17,24 @@ $ cd dotfiles
 #### 1. Install zsh configs and packages
 
 ```shell
-$ sh install-zsh.sh
-# zsh compinit: insecure directories
-$ sudo chown -R $(whoami) /usr/local/share/zsh /usr/local/share/zsh/site-functions
-$ chmod u+w /usr/local/share/zsh /usr/local/share/zsh/site-functions
+sh install-zsh.sh
 ```
 
-Open new terminal window with zsh shell and run
+If you get following error: `zsh compinit: insecure directories`. Run following commands:
 
 ```shell
-$ p10k configure
+sudo chown -R $(whoami) /usr/local/share/zsh /usr/local/share/zsh/site-functions
 ```
 
-for installing fonts and configuring prompt view.
+```shell
+chmod u+w /usr/local/share/zsh /usr/local/share/zsh/site-functions
+```
+
+Open new terminal window with zsh shell and run following command for installing fonts and configuring prompt view:
+
+```shell
+p10k configure
+```
 
 For Visual Studio Code: Open File → Preferences → Settings, enter `terminal.integrated.fontFamily` in the search box and set the value to `MesloLGS NF`.
 
@@ -35,7 +43,7 @@ For Visual Studio Code: Open File → Preferences → Settings, enter `terminal.
 You have to run previews step before.
 
 ```shell
-$ sh install-other.sh
+sh install-other.sh
 ```
 
 ## License
